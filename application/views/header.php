@@ -47,7 +47,7 @@
                 <li><a href="<?php echo base_url()?>"><b><span style="color:white">Home</span></b></a></li>
                 <li><a href="#"><b><span style="color:white">Suppliers</span></b></a></li>
                 <li><a href="<?php echo base_url()?>WeddingCost"><b><span style="color:white">Cost</span></b></a></li>
-                <li><a href="#"><b><span style="color:white">News</span></b></a></li>
+                <!--<li><a href="#"><b><span style="color:white">News</span></b></a></li>-->
                 <li><?php if(isset($User_id) && count($User_id)>0)
                       {?>
                     <a href="<?php echo base_url()?>Welcome/logout"><b><span style="color:white">LogOut</span></b></a>
