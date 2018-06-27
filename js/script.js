@@ -1,5 +1,25 @@
+$(document).ready(function(){
+  var url = window.location.origin+"/Wedishedi/Vendor" ;
+  $.ajax({ url: url+"/get_all_vendor_type", success: function(result){
+    var json_array = $.parseJSON(result);
+    var select = document.getElementById("vendor_type");
+    for(index in json_array) {
+      debugger;
+        select.options[select.options.length] = new Option(json_array[index].Vendor_type_name, json_array[index].Vendor_type_id);
+    }
+  }});
+  $.ajax({ url: url+"/get_all_city", success: function(result){
+    var json_array = $.parseJSON(result);
+    var select = document.getElementById("vendor_city");
+    for(index in json_array) {
+        select.options[select.options.length] = new Option(json_array[index].city_name, json_array[index].city_id);
+    }
+  }});
+});
 
 jQuery(function(){
+
+
 
 // start timecounter
   var clock;
@@ -65,7 +85,11 @@ jQuery(function(){
 
 $(".switch").click(function() {
   debugger;
-  $.ajax({ url: "../Vendor/get_services_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
+  $.ajax({ url: "../Vendor/get_service_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
+    debugger;
+    $("#panel-body-vendor-service").html(result);
+  }});
+  $.ajax({ url: "../Vendor/get_faq_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
     debugger;
     $("#panel-body-service").html(result);
   }});
@@ -268,7 +292,11 @@ else {
               }
               else {
                 ck_string.push($(this).val());
-                $.ajax({ url: "../Vendor/get_services_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
+                $.ajax({ url: "../Vendor/get_service_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
+                  debugger;
+                  $("#panel-body-vendor-service").append(result);
+                }});
+                $.ajax({ url: "../Vendor/get_faq_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
                   debugger;
                   $("#panel-body-service").append(result);
                 }});
@@ -367,10 +395,21 @@ else {
                           message: 'City is required'
                       }
                   }
+              },
+              Vendor_picture:{
+                validators: {
+                      file: {
+                        extension: 'jpeg,jpg,png',
+                            type: 'image/jpeg,image/png',
+                            maxSize: 1024 * 1024,
+                            message: 'The selected file is not valid, or the size is not large enough!'
+                      }
+                }
               }
           }
       	});
-      	if($('#vendor_add').bootstrapValidator('validate').has('.has-error').length > 0){
+
+      	if($('#vendor_add').bootstrapValidator('validate').has('.has-error').length > 0 && $("input[name='Vendor_type[]']:checked").length >0){
       		return false;
       	}
       else {

@@ -70,7 +70,9 @@
                             </label>
                             <div class="col-md-8 col-xs-12">
                               <img id="blah" class="img-responsive img-circle" style="max-height: 110px !important; max-width: 110px !important;" src="../images/vendortesting/<?php echo $vendor_detail['Vendor_picture_path']; ?>" alt="your image" />
-                              <input type="file" id="Vendor_picture" name="Vendor_picture" required="required" onchange="readURL(this);">
+                              <a id="remove_file" title="Remove file X">Remove file</a>
+                              <input type="hidden" id="remove_file_name" value="<?php echo $vendor_detail['Vendor_picture_path']; ?>">
+                              <input type="file" id="Vendor_picture" name="Vendor_picture" onchange="readURL(this);">
                             </div>
                           </div>
 
@@ -98,13 +100,32 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">City <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-xs-12">
-                              <input type="text" id="city" name="city" required="required" value="<?php echo $vendor_detail['City']; ?>" class="form-control col-md-7 col-xs-12">
+                              <select class="form-control col-md-7 col-xs-12" required="required" name="city" >
+                                <option value="">Select City</option>
+                                <?php if(isset($get_all_city) && count($get_all_city)>0){
+                                  foreach ($get_all_city as $city) {
+                                  ?>
+                                  <option <?php if($vendor_detail['City'] == $city['city_id'] ){?> selected="selected" <?} ?>  value="<?php echo $city['city_id']?>"><?php echo $city['city_name']?></option>
+                                  <?
+                                  }
+                                } ?>
+
+                              </select>
                             </div>
                           </div>
                         </div>
                           </div>
                           <div >
                               <h2>Tell Us About Your <br><strong>Services</strong></h2>
+                              <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+
+                               <div class="panel-body" id="panel-body-vendor-service">
+
+                               </div>
+                             </div>
+                          </div>
+                          <div >
+                              <h2>Frequently Asked <br><strong>Questions</strong></h2>
                               <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
 
                                <div class="panel-body" id="panel-body-service">
@@ -157,10 +178,26 @@ $(window).bind("load", function() {
       $.each($("input[name='Vendor_type[]']:checked"), function(){
         debugger;
         $.ajax({ url: "get_vendor_service_by_id", data:"vendor_id=<?php echo $vendor_detail['Vendor_id']?>&vendor_type_id="+$(this).val()+"", success: function(result){
+      $("#panel-body-vendor-service").append(result);
+    }});
+        $.ajax({ url: "get_vendor_faq_by_id", data:"vendor_id=<?php echo $vendor_detail['Vendor_id']?>&vendor_type_id="+$(this).val()+"", success: function(result){
       $("#panel-body-service").append(result);
     }});
       });
 });
+
+$('#remove_file').click(function(){
+  var name = $('#remove_file_name').val();
+  $.ajax({
+      type: 'POST',
+      url: '../Vendor/delete_vendor_picture',
+      data: "name="+name,
+      dataType: 'html'
+  });
+  $('#blah').attr('src','../images/avatar.png');
+  $('#remove_file').hide();
+});
+
 
 
 Dropzone.options.myDropzone = {

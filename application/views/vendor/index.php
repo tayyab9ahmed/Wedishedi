@@ -17,7 +17,7 @@
               <h1><span>Find The Best Suppliers In Your Area</span></h1>
               <div id="map" style="height:300px; width:100%; "></div>
               <hr>
-              <div class="col-md-12 nav-search">
+              <!---<div class="col-md-12 nav-search">
                 <form method="post" action="search">
                   <select required="required" name="vendor_type"  class="vendor_search select-left">
                       <option value="">Select Category</option>
@@ -41,11 +41,10 @@
                   </select>
                   <input type="submit" value="Find Suppliers" class="btn btn-success" style="font-size:20px; margin-left:150px;">
                 </form>
-              </div>
+              </div>--->
             </div>
 
               <div class="container">
-                <hr>
               <div class="col-md-12">
                 <h3 class="vendor_name"><?php echo count($listing); ?> Records Found.</h3>
               </div>

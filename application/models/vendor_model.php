@@ -17,7 +17,7 @@ class vendor_model extends CI_Model
 
   public function get_all_vendor_by_type_city($vendor_type,$vendor_city)
   {
-    $query = $this->db->query("SELECT *,(SELECT Vendor_picture_path FROM vendor_pictures vp WHERE vp.Vendor_id = v.Vendor_id LIMIT 1)AS Vendor_picture_path FROM vendors v WHERE  v.City like '%".$vendor_city."%' ");
+    $query = $this->db->query("SELECT *,(SELECT Vendor_picture_path FROM vendor_pictures vp WHERE vp.Vendor_id = v.Vendor_id LIMIT 1)AS Vendor_picture_path FROM vendors v WHERE  v.City =".$this->db->escape($vendor_city)."");
     $result_array = $query->result_array();
     return $result_array;
   }
@@ -92,25 +92,52 @@ class vendor_model extends CI_Model
     return $result_array;
   }
 
-  public function get_services_by_vendor_type($vendor_type_id)
+  public function get_service_by_vendor_type($vendor_type_id)
   {
-    $service_list = $this->get_services($vendor_type_id);
+    $service_list = $this->get_service($vendor_type_id);
     $get_vendor_title = $this->get_vendor_title($vendor_type_id);
-
     $out_put ='';
     $count = 0;
     if(isset($service_list) && $service_list != "")
     {
-      $out_put.='<div id="'.$vendor_type_id.'">';
-        $out_put.='<h3 style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
-       foreach($service_list as $service)
+      $out_put.='<div class="row" id="'.$vendor_type_id.'">';
+        $out_put.='<h3 style="background-color: #3F729B;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
+       foreach($service_list as $ser)
+        {
+          $count = $count + 1;
+          $out_put.='<div class="col-md-6">';
+          $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$ser['Service_title'].'';
+          $out_put.='</label>';
+          $out_put.='<div class="col-md-3 col-sm-3 col-xs-12">';
+          $out_put.='<input type="checkbox" style="width: 33px;"  id="Service_id_'.$ser['Service_id'].'" name="Service_'.$ser['Service_id'].'"  class="form-control col-md-7 col-xs-6 input_validator">';
+          $out_put.='  </div>';
+          $out_put.='</div>';
+        }
+        $out_put.='</div>';
+    }
+
+    return $out_put;
+  }
+
+  public function get_faq_by_vendor_type($vendor_type_id)
+  {
+    $faq_list = $this->get_faq($vendor_type_id);
+    $get_vendor_title = $this->get_vendor_title($vendor_type_id);
+
+    $out_put ='';
+    $count = 0;
+    if(isset($faq_list) && $faq_list != "")
+    {
+      $out_put.='<div class="row" id="'.$vendor_type_id.'">';
+        $out_put.='<h3 style="background-color: #9a4364;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
+       foreach($faq_list as $faq)
         {
           $count = $count + 1;
           $out_put.='<div class="form-group">';
-          $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$service['Service_title'].' <span class="required" style="color:red;">*</span>';
+          $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$faq['faq_title'].' <span class="required" style="color:red;">*</span>';
           $out_put.='</label>';
           $out_put.='<div class="col-md-3 col-sm-3 col-xs-12">';
-          $out_put.='<input type="text" id="Service_id_'.$service['Service_id'].'" name="Service_id_'.$service['Service_id'].'" required="required" class="form-control col-md-7 col-xs-6 input_validator">';
+          $out_put.='<input type="text" id="faq_id_'.$faq['faq_id'].'" name="faq_id_'.$faq['faq_id'].'" required="required" class="form-control col-md-7 col-xs-6 input_validator">';
           $out_put.='  </div>';
           $out_put.='</div>';
         }
@@ -121,16 +148,23 @@ class vendor_model extends CI_Model
 
   }
 
-  public function get_min_max_service_id()
+  public function get_min_max_faq_id()
   {
-    $query = $this->db->query("SELECT MIN(Service_id) AS min_serive_id , MAX(Service_id) AS max_serive_id FROM service ");
+    $query = $this->db->query("SELECT MIN(faq_id) AS min_serive_id , MAX(faq_id) AS max_serive_id FROM faq ");
     $result_array = $query->row_array();
     return $result_array;
   }
 
-  public function get_services($vendor_type_id)
+  public function get_service($vendor_type_id)
   {
     $query = $this->db->query("SELECT * FROM service WHERE Vendor_type_id = ".$vendor_type_id."");
+    $result_array = $query->result_array();
+    return $result_array;
+  }
+
+  public function get_faq($vendor_type_id)
+  {
+    $query = $this->db->query("SELECT * FROM faq WHERE Vendor_type_id = ".$vendor_type_id."");
     $result_array = $query->result_array();
     return $result_array;
   }
@@ -142,34 +176,69 @@ class vendor_model extends CI_Model
     return $result_array;
   }
 
-  public function get_vendor_services($vendor_type)
+  public function get_vendor_faq($vendor_type)
   {
-    $query = $this->db->query("SELECT * FROM service where Vendor_type_id = ".$vendor_type." ");
+    $query = $this->db->query("SELECT * FROM faq where Vendor_type_id = ".$vendor_type." ");
     $result_array = $query->result_array();
     return $result_array;
   }
 
-
-
   public function get_vendor_service_by_id($vendor_id,$vendor_type_id)
+  {
+    $service_list = $this->get_service($vendor_type_id);
+    $get_vendor_title = $this->get_vendor_title($vendor_type_id);
+    $query1 = $this->db->query("SELECT Services FROM vendors where Vendor_id = ".$vendor_id." ");
+    $services = $query1->row_array();
+
+    $out_put ='';
+    $count = 0;
+    if(isset($service_list) && $service_list != "")
     {
-      $query = $this->db->query("SELECT *,(SELECT s.Service_title FROM service s WHERE s.Service_id = vs.Service_id)AS Service_title FROM vendor_service vs JOIN service s ON s.Service_id = vs.Service_id JOIN vendor_type vt ON s.Vendor_type_id = vt.Vendor_type_id where vs.Vendor_id = ".$vendor_id." and vt.Vendor_type_id = ".$vendor_type_id."");
-      $service_list = $query->result_array();
+      $out_put.='<div class="row" id="'.$vendor_type_id.'">';
+        $out_put.='<h3 style="background-color: #3F729B;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
+       foreach($service_list as $ser)
+        {
+          $count = $count + 1;
+          $out_put.='<div class="col-md-6">';
+          $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$ser['Service_title'].'';
+          $out_put.='</label>';
+          $out_put.='<div class="col-md-3 col-sm-3 col-xs-12">';
+          if(strpos($services['Services'], $ser['Service_id']) !== false)
+          {
+            $out_put.='<input type="checkbox" style="width: 33px;" checked="checked"  id="Service_id_'.$ser['Service_id'].'" name="Service_'.$ser['Service_id'].'"  class="form-control col-md-7 col-xs-6 input_validator">';
+          }
+          else {
+            $out_put.='<input type="checkbox" style="width: 33px;" id="Service_id_'.$ser['Service_id'].'" name="Service_'.$ser['Service_id'].'"  class="form-control col-md-7 col-xs-6 input_validator">';
+          }
+
+          $out_put.='  </div>';
+          $out_put.='</div>';
+        }
+        $out_put.='</div>';
+    }
+
+    return $out_put;
+  }
+
+  public function get_vendor_faq_by_id($vendor_id,$vendor_type_id)
+    {
+      $query = $this->db->query("SELECT *,(SELECT s.faq_title FROM faq s WHERE s.faq_id = vs.faq_id)AS faq_title FROM vendor_faq vs JOIN faq s ON s.faq_id = vs.faq_id JOIN vendor_type vt ON s.Vendor_type_id = vt.Vendor_type_id where vs.Vendor_id = ".$vendor_id." and vt.Vendor_type_id = ".$vendor_type_id."");
+      $faq_list = $query->result_array();
       $get_vendor_title = $this->get_vendor_title($vendor_type_id);
       $out_put ='';
       $count = 0;
-      if(isset($service_list) && $service_list != "")
+      if(isset($faq_list) && $faq_list != "")
       {
         $out_put.='<h3 style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
 
-         foreach($service_list as $service)
+         foreach($faq_list as $faq)
           {
             $count = $count + 1;
             $out_put.='<div class="form-group" >';
-            $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$service['Service_title'].' <span class="required" style="color:red;">*</span>';
+            $out_put.='<label class="control-label col-md-6 col-sm-6 col-xs-12" for="vendor-name">'.$faq['faq_title'].' <span class="required" style="color:red;">*</span>';
             $out_put.='</label>';
             $out_put.='<div class="col-md-3 col-sm-3 col-xs-12">';
-            $out_put.='<input type="text" id="Service_id_'.$service['Service_id'].'" name="Service_id_'.$service['Service_id'].'" value="'.$service['result'].'" required="required" class="form-control col-md-7 col-xs-6">';
+            $out_put.='<input type="text" id="faq_id_'.$faq['faq_id'].'" name="faq_id_'.$faq['faq_id'].'" value="'.$faq['result'].'" required="required" class="form-control col-md-7 col-xs-6">';
             $out_put.='  </div>';
             $out_put.='</div>';
           }
@@ -178,18 +247,18 @@ class vendor_model extends CI_Model
       return $out_put;
     }
 
-  public function get_all_vendor_services($vendor_id)
+  public function get_all_vendor_faq($vendor_id)
   {
-    $query = $this->db->query("SELECT *,(SELECT s.Service_title FROM service s WHERE s.Service_id = vs.Service_id)AS title FROM vendor_service vs WHERE vs.vendor_id = ".$vendor_id."");
+    $query = $this->db->query("SELECT *,(SELECT s.faq_title FROM faq s WHERE s.faq_id = vs.faq_id)AS title FROM vendor_faq vs WHERE vs.vendor_id = ".$vendor_id."");
     $result_array = $query->result_array();
     return $result_array;
   }
 
-  public function vendor_services($vendor_id)
+  public function vendor_faq($vendor_id)
   {
     $query = $this->db->query("SELECT *
-                              FROM vendor_service vs
-                              JOIN service s ON s.Service_id = vs.Service_id
+                              FROM vendor_faq vs
+                              JOIN faq s ON s.faq_id = vs.faq_id
                               JOIN vendor_type vt ON s.Vendor_type_id = vt.Vendor_type_id
                               WHERE vs.Vendor_id = ".$vendor_id."");
     $result_array = $query->result_array();
@@ -201,7 +270,7 @@ class vendor_model extends CI_Model
     {
 
       $date = date('Y-m-d H:i:s');
-      $sql = 'insert into vendors(Vendor_name,Vendor_description,Vendor_starting_price,Vendor_address,User_id,City,CreatedOn,Vendor_lat,Vendor_long) VALUES("'.$data['Vendor_name'].'","'.$data['Vendor_description'].'","'.$data['Vendor_starting_price'].'","'.$data['Vendor_address'].'","'.$data['User_id'].'","'.$data['city'].'","'.$date.'","'.$data['Vendor_lat'].'","'.$data['Vendor_long'].'")';
+      $sql = 'insert into vendors(Vendor_name,Vendor_description,Vendor_starting_price,Vendor_address,User_id,City,CreatedOn,Vendor_lat,Vendor_long,Services) VALUES("'.$data['Vendor_name'].'","'.$data['Vendor_description'].'","'.$data['Vendor_starting_price'].'","'.$data['Vendor_address'].'","'.$data['User_id'].'","'.$data['city'].'","'.$date.'","'.$data['Vendor_lat'].'","'.$data['Vendor_long'].'","'.$data['serlist'].'")';
       $this->db->query($sql);
       $lastid = $this->db->insert_id();
       if(isset($data['Vendor_type']))
@@ -265,7 +334,7 @@ class vendor_model extends CI_Model
     public function edit($data)
     {
       $date = date('Y-m-d H:i:s');
-      $sql = 'update vendors Set Vendor_name = "'.$data['Vendor_name'].'" ,Vendor_description = "'.$data['Vendor_description'].'" , Vendor_starting_price = "'.$data['Vendor_starting_price'].'", Vendor_address = "'.$data['Vendor_address'].'", User_id = "'.$data['User_id'].'",City = "'.$data['city'].'",ModifiedOn = "'.$date.'" WHERE Vendor_id = "'.$data['vendor_id'].'"';
+      $sql = 'update vendors Set Vendor_name = "'.$data['Vendor_name'].'" ,Vendor_description = "'.$data['Vendor_description'].'" , Vendor_starting_price = "'.$data['Vendor_starting_price'].'", Vendor_address = "'.$data['Vendor_address'].'", Services = "'.$data['serlist'].'", User_id = "'.$data['User_id'].'",City = "'.$data['city'].'",ModifiedOn = "'.$date.'" WHERE Vendor_id = "'.$data['vendor_id'].'"';
       $this->db->query($sql);
       if(isset($data['Vendor_type']))
       {
@@ -338,18 +407,18 @@ class vendor_model extends CI_Model
       return $result_array;
     }
 
-    public function add_vendor_services($vendor_id,$service_id,$resut)
+    public function add_vendor_faq($vendor_id,$faq_id,$resut)
     {
       $date = date('Y-m-d H:i:s');
-      $sql = 'insert into vendor_service(Vendor_id,Service_id,creation_date,result) VALUES("'.$vendor_id.'","'.$service_id.'","'.$date.'","'.$resut.'")';
+      $sql = 'insert into vendor_faq(Vendor_id,faq_id,creation_date,result) VALUES("'.$vendor_id.'","'.$faq_id.'","'.$date.'","'.$resut.'")';
       $this->db->query($sql);
       $lastid = $this->db->insert_id();
       return $lastid;
     }
 
-    public function edit_vendor_services($vendor_id,$service_id,$resut)
+    public function edit_vendor_faq($vendor_id,$faq_id,$resut)
     {
-      $sql = 'update vendor_service set result = "'.$resut.'" where Vendor_id="'.$vendor_id.'" and Service_id="'.$service_id.'"';
+      $sql = 'update vendor_faq set result = "'.$resut.'" where Vendor_id="'.$vendor_id.'" and faq_id="'.$faq_id.'"';
       return $this->db->query($sql);
     }
 
@@ -374,7 +443,7 @@ class vendor_model extends CI_Model
 
     public function get_vendor_id_by_user_id($User_id)
     {
-      $sql = 'Select Vendor_id from vendors where User_id = '.$User_id.'';
+      $sql = 'Select * from vendors where User_id = '.$User_id.'';
       $query = $this->db->query($sql);
       $result_array = $query->row_array();
       return $result_array;
@@ -423,6 +492,39 @@ class vendor_model extends CI_Model
     {
       $sql = 'update package_picture set Is_Deleted = 1 where package_picture_path = "'.$filepath.'"';
        return $this->db->query($sql);
+    }
+
+    public function delete_vendor_picture($filepath)
+    {
+      $sql = 'update vendor_pictures set Is_Deleted = 1 where vendor_picture_path = "'.$filepath.'"';
+       return $this->db->query($sql);
+    }
+
+    public function get_all_city()
+    {
+      $query = $this->db->query("SELECT *
+                                FROM city
+                                ");
+      $result_array = $query->result_array();
+      return $result_array;
+    }
+
+    public function get_min_max_service_id()
+    {
+      $query = $this->db->query("SELECT MIN(Service_id) AS min_serive_id , MAX(Service_id) AS max_serive_id FROM service ");
+      $result_array = $query->row_array();
+      return $result_array;
+    }
+
+    public function get_vendor_services($serlist)
+    {
+      $sql = "SELECT *
+                                FROM service s
+                                WHERE s.Service_id IN (".$serlist.")";
+
+      $query = $this->db->query($sql);
+      $result_array = $query->result_array();
+      return $result_array;
     }
 }
 

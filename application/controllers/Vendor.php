@@ -36,10 +36,15 @@ class Vendor extends CI_Controller {
 	{
 		$vendor_id = $this->uri->segment(3);
 		$data['get_all_vendor_type'] = $this->vendor_model->get_all_vendor_type();
-		$data['get_vendor_by_id'] = $this->vendor_model->get_vendor_by_id($vendor_id);
+		$get_vendor_by_id = $this->vendor_model->get_vendor_by_id($vendor_id);
 
+		if(isset($get_vendor_by_id['Services']) && count($get_vendor_by_id['Services'])>0)
+		{
+			$data['get_services'] = $this->vendor_model->get_vendor_services($get_vendor_by_id['Services']);
+		}
+		$data['get_vendor_by_id'] = $get_vendor_by_id;
 		$vendor_type =  $data['get_vendor_by_id']['Vendor_type'];
-		$data['get_all_vendor_services'] = $this->vendor_model->vendor_services($vendor_id);
+		$data['get_all_vendor_faq'] = $this->vendor_model->vendor_faq($vendor_id);
 		$data['get_all_vendor_pictures'] = $this->vendor_model->get_vendor_images($vendor_id);
 		$data['get_all_package'] = $this->vendor_model->get_all_package($vendor_id);
 		//$vendor_type =
@@ -79,12 +84,29 @@ class Vendor extends CI_Controller {
 		}
 	}
 
-	public function get_services_by_vendor_type()
+	public function get_service_by_vendor_type()
   {
     $vendor_type_id = $this->input->get('vendor_type_id');
 
-    $vendor_services_list = $this->vendor_model->get_services_by_vendor_type($vendor_type_id);
-    echo $vendor_services_list;
+    $vendor_service_list = $this->vendor_model->get_service_by_vendor_type($vendor_type_id);
+    echo $vendor_service_list;
+  }
+
+	public function get_faq_by_vendor_type()
+  {
+    $vendor_type_id = $this->input->get('vendor_type_id');
+
+    $vendor_faq_list = $this->vendor_model->get_faq_by_vendor_type($vendor_type_id);
+    echo $vendor_faq_list;
+  }
+
+	public function get_vendor_faq_by_id()
+  {
+    $vendor_id = $this->input->get('vendor_id');
+		$vendor_type_id = $this->input->get('vendor_type_id');
+
+    $vendor_faq_list = $this->vendor_model->get_vendor_faq_by_id($vendor_id,$vendor_type_id);
+    echo $vendor_faq_list;
   }
 
 	public function get_vendor_service_by_id()
@@ -92,8 +114,8 @@ class Vendor extends CI_Controller {
     $vendor_id = $this->input->get('vendor_id');
 		$vendor_type_id = $this->input->get('vendor_type_id');
 
-    $vendor_services_list = $this->vendor_model->get_vendor_service_by_id($vendor_id,$vendor_type_id);
-    echo $vendor_services_list;
+    $vendor_service_list = $this->vendor_model->get_vendor_service_by_id($vendor_id,$vendor_type_id);
+    echo $vendor_service_list;
   }
 
 	public function get_vendor_images()
@@ -126,10 +148,10 @@ class Vendor extends CI_Controller {
        echo json_encode($result);
 	}
 
-	public function get_vendor_services()
+	public function get_vendor_faq()
 	{
 		$vendor_type = $this->input->post('vendor_type_id');
-		echo json_encode($this->vendor_model->get_vendor_services($vendor_type));
+		echo json_encode($this->vendor_model->get_vendor_faq($vendor_type));
 	}
 
 	public function edit()
@@ -140,10 +162,11 @@ class Vendor extends CI_Controller {
 			$data['get_all_vendor_type'] = $this->vendor_model->get_all_vendor_type();
 			$vendor_id = $this->vendor_model->get_vendor_id_by_user_id($User_id);
 			$data['user_detail'] = $this->user_model->get_user_by_id($User_id);
+			$data['get_all_city'] = $this->vendor_model->get_all_city();
 			$data['vendor_id'] = $vendor_id['Vendor_id'];
 			$data['vendor_detail'] = $this->vendor_model->get_vendor_by_id($data['vendor_id']);
 			$data['vendor_picture'] = $this->vendor_model->get_vendor_picture_by_id($data['vendor_id']);
-			$data['vendor_services'] = $this->vendor_model->vendor_services($data['vendor_id']);
+			$data['vendor_faq'] = $this->vendor_model->vendor_faq($data['vendor_id']);
 			$this->load->helper('url');
 			$this->load->view('vendor/edit.php',$data);
 		}
@@ -169,6 +192,18 @@ class Vendor extends CI_Controller {
 				$data['Vendor_lat'] = $this->input->post('Vendor_lat');
 				$data['Vendor_long'] =  $this->input->post('Vendor_long');
 				$data['vendor_id'] = $this->input->post('vendor_id');
+				$min_max_service_id = $this->vendor_model->get_min_max_service_id();
+				$prefix = $serlist = '';
+				for($x = $min_max_service_id['min_serive_id'];$x<=$min_max_service_id['max_serive_id'];$x++)
+				{
+					$result = $this->input->post('Service_'.$x.'');
+					if(isset($result) && $result == "on")
+					{
+						$serlist .= $prefix . '' . $x . '';
+						$prefix = ', ';
+					}
+				}
+				$data['serlist'] = rtrim($serlist,', ');
 				if(isset($data['vendor_id']) && $data['vendor_id'] > 0)
 				{
 					$vendor_id = $data['vendor_id'];
@@ -178,23 +213,23 @@ class Vendor extends CI_Controller {
 					$vendor_id = $this->vendor_model->add($data);
 				}
 
-				$min_max_service_id = $this->vendor_model->get_min_max_service_id();
+				$min_max_faq_id = $this->vendor_model->get_min_max_faq_id();
 
-				for($x = $min_max_service_id['min_serive_id'];$x<=$min_max_service_id['max_serive_id'];$x++)
+				for($x = $min_max_faq_id['min_serive_id'];$x<=$min_max_faq_id['max_serive_id'];$x++)
 				{
 
-						$result = $this->input->post('Service_id_'.$x.'');
+						$result = $this->input->post('faq_id_'.$x.'');
 
 						if(isset($result) && count($result)>0)
 						{
 
-							$service_id = $x;
+							$faq_id = $x;
 							if(isset($data['vendor_id']) && $data['vendor_id'] > 0)
 							{
-								$vendor_service_id = $this->vendor_model->edit_vendor_services($vendor_id,$service_id,$result);
+								$vendor_faq_id = $this->vendor_model->edit_vendor_faq($vendor_id,$faq_id,$result);
 							}
 							else {
-								$vendor_service_id = $this->vendor_model->add_vendor_services($vendor_id,$service_id,$result);
+								$vendor_faq_id = $this->vendor_model->add_vendor_faq($vendor_id,$faq_id,$result);
 							}
 						}
 				}
@@ -307,7 +342,8 @@ class Vendor extends CI_Controller {
 					$this->load->helper('url');
 					$data['get_all_vendor_type'] = $this->vendor_model->get_all_vendor_type();
 					$user_id = $this->session->userdata('User_id');
-					$data['Vendor_id'] = $this->vendor_model->get_vendor_id_by_user_id($user_id);
+					$data['vendor_data'] = $this->vendor_model->get_vendor_id_by_user_id($user_id);
+
 					$this->load->view('vendor/addpackage.php',$data);
 				}
 				else {
@@ -343,6 +379,18 @@ class Vendor extends CI_Controller {
 				{
 					unlink($file_path);
 					$this->vendor_model->delete_package_picture($pic_name);
+				}
+
+			}
+
+			public function delete_vendor_picture()
+			{
+				$pic_name = $this->input->POST('name');
+				$file_path= FCPATH.'images\vendortesting\\'.$pic_name;
+				if(is_file($file_path))
+				{
+					unlink($file_path);
+					$this->vendor_model->delete_vendor_picture($pic_name);
 				}
 
 			}
@@ -402,5 +450,15 @@ class Vendor extends CI_Controller {
 						 }
 					}
 				}
+			}
+
+			public function get_all_vendor_type()
+			{
+				echo json_encode($this->vendor_model->get_all_vendor_type());
+			}
+
+			public function get_all_city()
+			{
+				echo json_encode($this->vendor_model->get_all_city());
 			}
 }

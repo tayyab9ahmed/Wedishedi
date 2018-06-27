@@ -72,7 +72,7 @@
                         </div>
 
                      <input type="hidden" name="User_id" value="<?php echo $this->session->userdata('User_id'); ?>">
-                     <input type="hidden" name="vendor_id" value="<?php  echo $Vendor_id['Vendor_id']; ?>">
+                     <input type="hidden" name="vendor_id" value="<?php  echo $vendor_data['Vendor_id']; ?>">
                      <button type="button" style="margin-top: 100px;" id="img_upload" class="btn btn-success pull-right" >Save</button>
 
               </div>

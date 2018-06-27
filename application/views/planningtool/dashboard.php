@@ -114,13 +114,32 @@
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">City<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-xs-12">
-                                    <input type="text" id="city" name="city" required="required" class="form-control col-md-7 col-xs-12">
+                                    <select class="form-control col-md-7 col-xs-12" required="required" name="city" >
+                                      <option value="">Select City</option>
+                                      <?php if(isset($get_all_city) && count($get_all_city)>0){
+                                        foreach ($get_all_city as $city) {
+                                        ?>
+                                        <option value="<?php echo $city['city_id']?>"><?php echo $city['city_name']?></option>
+                                        <?
+                                        }
+                                      } ?>
+
+                                    </select>
                                   </div>
                                 </div>
                       				</div>
                                 </div>
                                 <div >
                                     <h2>Tell Us About Your <br><strong>Services</strong></h2>
+                                    <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+
+                                     <div class="panel-body" id="panel-body-vendor-service">
+
+                                     </div>
+                                   </div>
+                                </div>
+                                <div >
+                                    <h2>Frequently Asked <br><strong>Questions</strong></h2>
                                     <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
 
                                      <div class="panel-body" id="panel-body-service">

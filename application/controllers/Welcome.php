@@ -27,6 +27,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		$data['get_all_vendor_type'] = $this->vendor_model->get_all_vendor_type();
+		$data['get_all_city'] = $this->vendor_model->get_all_city();
 		$this->load->helper('url');
 		$this->load->view('welcome_message.php',$data);
 	}
@@ -65,7 +66,7 @@ class Welcome extends CI_Controller {
 			{
 				$data['vendor_detail'] = $this->vendor_model->get_vendor_by_id($data['vendor_id']);
 				$data['vendor_picture'] = $this->vendor_model->get_vendor_picture_by_id($data['vendor_id']);
-				$data['vendor_services'] = $this->vendor_model->vendor_services($data['vendor_id']);
+				$data['vendor_faq'] = $this->vendor_model->vendor_faq($data['vendor_id']);
 				$this->load->helper('url');
 				$this->load->view('planningtool/profile.php',$data);
 			}
@@ -105,6 +106,7 @@ class Welcome extends CI_Controller {
 		if(isset($User_id) && count($User_id)>0)
 		{
 			$data['get_all_vendor_type'] = $this->vendor_model->get_all_vendor_type();
+			$data['get_all_city'] = $this->vendor_model->get_all_city();
 			$vendor_id = $this->vendor_model->get_vendor_id_by_user_id($User_id);
 			if(isset($vendor_id) && count($vendor_id)>0)
 			{

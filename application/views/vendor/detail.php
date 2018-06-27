@@ -15,7 +15,7 @@
     <div class="vendor">
         <div class="content">
             <div class="container">
-              <h1><span>Find The Best Suppliers In Your Area</span></h1>
+              <!---<h1><span>Find The Best Suppliers In Your Area</span></h1>
               <div class="col-md-12 nav-search">
                 <form method="post" action="../search">
                   <select required="required" name="vendor_type"  class="vendor_search magnifying select-left">
@@ -38,13 +38,13 @@
                   </select>
                   <input type="submit" value="Find Vendors" class="btn btn-success" style="font-size:20px; margin-left:150px">
                 </form>
-              </div>
+              </div>--->
             </div>
             <section>
             <div class="container" style="margin-top: 50px;margin-bottom: 30px;">
               <div class="row">
                 <div class="col-md-6">
-
+                  <span class="vendor_name container" style="padding-left:15px;">Hi, <?php echo $get_vendor_by_id['Vendor_name']; ?>.<span>
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-warning" data-toggle="modal" data-target="#Quote">Request Quote</button>
@@ -218,8 +218,6 @@
                 <!--</div> -->
                 <div class="col-md-4" >
                   <div style="background: #f7f7f7;">
-                    <span class="vendor_name container" style="padding-left:15px;"><?php echo $get_vendor_by_id['Vendor_name']; ?>.<span>
-                    <hr></hr>
                     <div class="row">
                       <div class="col-lg-1 col-centered">
                         <img id="blah" class="img-responsive " style="margin-left:100px;max-height: 150px !important; max-width: 150px !important;" src="../../images/vendortesting/<?php echo $get_vendor_by_id['Vendor_picture_path']; ?>" alt="your image" />
@@ -238,37 +236,59 @@
                     </div>
                   </div>
                   <div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="background: #f7f7f7;">
+                      <h1 style="margin-top: 30px;"><span>Services Included</span></h1>
+                      <div class="tab-content" style="margin-top:20px;">
+                        <div id="Overview12" class="tab-pane fade in active">
+                          <div class="table-responsive">
+                            <table class="table">
+                              <tbody>
+                                <?php foreach ($get_services as $service) {
+                                ?>
+                                <tr>
+                                  <td style="font-size:20px;"><?php echo $service['Service_title'];?></td>
+                                    <th style="font-size:20px; color: green"><i class="glyphicon glyphicon-ok"></i></th>
+                                </tr>
+                                <?
+                                } ?>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="background: #f7f7f7;">
                       <!--<ul class="nav nav-pills nav-justified">
                         <li class="active"><a data-toggle="tab" href="#Overview">Frequently Asked Questions</a></li>
                         <li><a data-toggle="tab" href="#Avalaiblity">Avalaiblity</a></li>
                       </ul>-->
-                      <h1 style="margin-top: 150px;"><span>Frequently Asked Questions</span></h1>
+                      <h1 style="margin-top: 30px;"><span>Frequently Asked Questions</span></h1>
                       <div class="tab-content" style="margin-top:20px;">
                         <div id="Overview" class="tab-pane fade in active">
                           <div class="table-responsive">
                             <table class="table">
                               <tbody>
-                                <?php if(isset($get_all_vendor_services) && count($get_all_vendor_services)>0)
+                                <?php if(isset($get_all_vendor_faq) && count($get_all_vendor_faq)>0)
                                 {
                                   $prev = 0;
                                   $new = 0;
-                                  foreach ($get_all_vendor_services as $vendor_services) {
-                                      $new = $vendor_services['Vendor_type_id'];
+                                  foreach ($get_all_vendor_faq as $vendor_faq) {
+                                      $new = $vendor_faq['Vendor_type_id'];
                                   ?>
                                   <?
                                   if($new != $prev)
                                   {
                                   ?>
 
-                                  <tr><td style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;"><? echo $vendor_services['Vendor_type_name']; ?></td><td style="background-color: #ff7043"></td></tr>
+                                  <tr><td style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;"><? echo $vendor_faq['Vendor_type_name']; ?></td><td style="background-color: #ff7043"></td></tr>
                                 <? } ?>
                                   <tr>
-                                    <td><?php echo $vendor_services['Service_title'];?></td>
-                                      <th><?php echo $vendor_services['result'];?></th>
+                                    <td><?php echo $vendor_faq['faq_title'];?></td>
+                                      <th><?php echo $vendor_faq['result'];?></th>
                                   </tr>
                                   <?php
-                                  $prev = $vendor_services['Vendor_type_id'];
+                                  $prev = $vendor_faq['Vendor_type_id'];
                                   }
                                 }?>
 

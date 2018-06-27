@@ -148,7 +148,7 @@ header .navbar-nav>li>a
 
 header .navbar-right{
     /*margin-right: 50px;*/
-        padding-top: 12px;
+    /*    padding-top: 12px;*/
 }
 
 header .navbar-nav>li>a:hover
@@ -203,9 +203,9 @@ header .navbar-nav>li>a:hover
     background-attachment: fixed;
 }
 
-/*.header-image .bg-color{
-    background-color: rgba(0,0,0,0.6);
-}*/
+.header-image .bg-color{
+    background-color: rgba(0,0,0,0.3);
+}
 
 .header-image .content{
   /*  background-image: url(../images/Compare-banner.png);*/
@@ -599,7 +599,6 @@ transform: scale(1.04);
 
 
 footer{
-    background-image: url(../images/subscribe.jpg);
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -1003,7 +1002,6 @@ panel-title>.small, .panel-title>.small>a, .panel-title>a, .panel-title>small, .
 .vendor .content .container h1{
     font-family: Montserrat-Regular;
     font-size: 35px;
-    margin-top: 100px;
     text-align: center;
 }
 

@@ -21,7 +21,8 @@
             <div class="bg-color">
                 <div class="content">
                     <div class="container">
-                        <div class="row">
+                      <h2 style="font-size: 45px;font-weight: bold;">Things you need to done for your wedding<br><span>Find it on wedishedi</span></h2>
+                        <!---<div class="row">
                             <div class="col-md-12 nav-search nav-search-margin">
                               <form method="post" action="Vendor/search">
                                 <select required="required" name="vendor_type"  class="vendor_search magnifying select-left">
@@ -36,11 +37,16 @@
                                       }
                                     }?>
                                 </select>
-                                <select  required="required" name="city" class="vendor_search magnifying select-left" style="margin-left:20px;">
+                                <select  class="vendor_search magnifying select-left" required="required" style="margin-left:20px;" name="city" >
                                   <option value="">Select City</option>
-                                  <option value="Lahore">Lahore</option>
-                                  <option value="Karachi">Karachi</option>
-                                  <option value="Islamabad">Islamabad</option>
+                                  <?php if(isset($get_all_city) && count($get_all_city)>0){
+                                    foreach ($get_all_city as $city) {
+                                    ?>
+                                    <option value="<?php echo $city['city_id']?>"><?php echo $city['city_name']?></option>
+                                    <?
+                                    }
+                                  } ?>
+
                                 </select>
                                 <input type="submit" value="Find Suppliers" class="btn btn-success" style="font-size:20px; margin-left:150px;">
                               </form>
@@ -48,7 +54,7 @@
                             <!--<div class="col-md-12" style="padding-top: 100px;">
                                 <h1><span>Memorable </span>Moments</h1>
                             </div>--->
-                        </div>
+                      <!--  </div>--->
                     </div>
                 </div>
             </div>
