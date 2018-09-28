@@ -55,7 +55,7 @@
                   foreach ($listing as $dat)
                   {
                     ?>
-                      <a href="detail/<?php echo $dat['Vendor_id']; ?>">
+                      <a href="<?php echo base_url()?>Vendor/detail/<?php echo $dat['Vendor_id']; ?>">
                 <div class="col-md-12 vendor-box">
 
 
@@ -75,7 +75,7 @@
                   </div>
                   <div class="col-md-4">
                     <div class="row">
-                      <div class="pull-right starring_price">Starring Price - Rs 4,567</div>
+                      <div class="pull-right starring_price">Starring Price - Rs <?php echo $dat['Vendor_starting_price'] ; ?></div>
                     </div>
                     <div class="row" style="margin-top: 10px;">
                       <button class="btn btn-info pull-right"><i class="fa fa-edit"></i>  Request Quote</button>

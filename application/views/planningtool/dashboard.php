@@ -29,18 +29,18 @@
                    <div class="step-one">
 
                            <h2>Tell Us About Your <br><strong>Business</strong></h2>
-                           <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+                           <div class="panel panel-primary" style="border-color: transparent;">
                               <h3 style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">Vendor General Information</h3>
                               <div class="panel-body">
                                 <div class="form-group" >
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="vendor-name">Name <span class="required">*</span>
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="vendor-name">Business Name <span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-xs-12">
                                     <input type="text" id="Vendor_name" name="Vendor_name" required="required" class="form-control col-md-7 col-xs-12">
                                   </div>
                                 </div>
                                 <div class="form-group" >
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">Description<span class="required">*</span>
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">Describe your business<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-xs-12">
                                     <textarea type="text" id="Vendor_description" name="Vendor_description" required="required" style="min-height: 150px;" class="form-control col-md-7 col-xs-12"></textarea>
@@ -48,10 +48,10 @@
                                 </div>
 
                                 <div class="form-group" >
-                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">Logo / Profile Picture<span class="required">*</span>
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-name">Cover Photo<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-xs-12">
-                                    <img id="blah" class="img-responsive img-circle" style="max-height: 110px !important; max-width: 110px !important;" src="../images/avatar.png" alt="your image" />
+                                  <!--  <img id="blah" class="img-responsive img-circle"  src="../images/avatar.png" alt="your image" /> -->
                                     <input type="file" id="Vendor_picture" name="Vendor_picture" required="required" onchange="readURL(this);">
                                   </div>
                                 </div>
@@ -88,7 +88,7 @@
 
                       				</div>
                       			</div>
-                            <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+                            <div class="panel panel-primary" style="border-color: transparent;">
                               <h3 style="background-color: #ff7043;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">Vendor Location</h3>
 
                               <div class="panel-body">
@@ -131,7 +131,7 @@
                                 </div>
                                 <div >
                                     <h2>Tell Us About Your <br><strong>Services</strong></h2>
-                                    <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+                                    <div class="panel panel-primary" style="border-color: transparent;">
 
                                      <div class="panel-body" id="panel-body-vendor-service">
 
@@ -140,7 +140,7 @@
                                 </div>
                                 <div >
                                     <h2>Frequently Asked <br><strong>Questions</strong></h2>
-                                    <div class="panel panel-primary" style="background-color: #F4F496;border-color: transparent;">
+                                    <div class="panel panel-primary" style="border-color: transparent;">
 
                                      <div class="panel-body" id="panel-body-service">
 

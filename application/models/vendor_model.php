@@ -100,7 +100,7 @@ class vendor_model extends CI_Model
     $count = 0;
     if(isset($service_list) && $service_list != "")
     {
-      $out_put.='<div class="row" id="'.$vendor_type_id.'">';
+      $out_put.='<div class="row '.$vendor_type_id.'" >';
         $out_put.='<h3 style="background-color: #3F729B;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
        foreach($service_list as $ser)
         {
@@ -128,7 +128,7 @@ class vendor_model extends CI_Model
     $count = 0;
     if(isset($faq_list) && $faq_list != "")
     {
-      $out_put.='<div class="row" id="'.$vendor_type_id.'">';
+      $out_put.='<div class="row '.$vendor_type_id.'">';
         $out_put.='<h3 style="background-color: #9a4364;padding: 15px 0px 15px 0px;text-align: center;font-weight: bold;color: white;">'.$get_vendor_title['Vendor_type_name'].'</h3>';
        foreach($faq_list as $faq)
         {
@@ -481,7 +481,7 @@ class vendor_model extends CI_Model
 
     public function get_package_by_id($package_id)
     {
-      $query = $this->db->query("SELECT *
+      $query = $this->db->query("SELECT *,(select Vendor_type_name from vendor_type vt where vt.Vendor_type_id = p.Package_category) as type
                                 FROM package p
                                 WHERE p.Package_id =".$package_id."");
       $result_array = $query->row_array();

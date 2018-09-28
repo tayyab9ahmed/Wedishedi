@@ -1,10 +1,11 @@
-$(document).ready(function(){
+
+ $(document).ready(function(){
   var url = window.location.origin+"/Wedishedi/Vendor" ;
   $.ajax({ url: url+"/get_all_vendor_type", success: function(result){
     var json_array = $.parseJSON(result);
     var select = document.getElementById("vendor_type");
     for(index in json_array) {
-      debugger;
+
         select.options[select.options.length] = new Option(json_array[index].Vendor_type_name, json_array[index].Vendor_type_id);
     }
   }});
@@ -16,6 +17,12 @@ $(document).ready(function(){
     }
   }});
 });
+
+
+//calendar events
+
+//calendar events
+
 
 jQuery(function(){
 
@@ -39,7 +46,7 @@ jQuery(function(){
     clock.start();
 /* end time counter
   $('#phoneNumber').on('change', function () {
-    debugger;
+
       var phone_num_regex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/i;
       if (phone_num_regex.test($(this).val())) {
         $('#message_phone').html('Valid Pakistan Phone Number').css('color', 'green');
@@ -84,20 +91,20 @@ jQuery(function(){
 
 
 $(".switch").click(function() {
-  debugger;
+
   $.ajax({ url: "../Vendor/get_service_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
-    debugger;
+
     $("#panel-body-vendor-service").html(result);
   }});
   $.ajax({ url: "../Vendor/get_faq_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
-    debugger;
+
     $("#panel-body-service").html(result);
   }});
 });
 
 //login form validation and submittion
 $('.login').click(function(){
-debugger;
+
 
 $('#user-login').bootstrapValidator({
   trigger: 'blur',
@@ -125,7 +132,7 @@ if($('#user-login').bootstrapValidator('validate').has('.has-error').length > 0)
   return false;
 }
 else {
-  debugger;
+
   $.ajax({type: "POST", url: "dologin", data:$("#user-login").serialize(), success: function(result){
       if(result == "true")
       {
@@ -140,7 +147,7 @@ else {
 });
 // signup form validation and submittion
 $('.signup').click(function(){
-debugger;
+
 $('#user_signup').bootstrapValidator({
   trigger: 'blur',
   fields: {
@@ -202,7 +209,7 @@ $('#user_signup').bootstrapValidator({
 });
 
 $.ajax({type: "POST", url: "chk_email", async: false, data:{User_email:$("#User_email").val()}, success: function(result){
-    debugger;
+
     if(result == "false")
     {
      $('#User_email').css({'border-color':'#a94442'});
@@ -219,7 +226,7 @@ if($('#user_signup').bootstrapValidator('validate').has('.has-error').length > 0
     return false;
 }
 else {
-  debugger;
+
 
   $.ajax({type: "POST", url: "save", async: false, data:$("#user_signup").serialize(), success: function(result){
        window.location.href = 'http://localhost:8080/Wedishedi/Welcome/login';
@@ -273,10 +280,10 @@ else {
         label_position: 'after'
         ,click: function( ev, checked )
             {
-              debugger;
+
               $.each($("input[name='Vendor_type[]']:not(:checked)"), function(){
-                debugger;
-                $("#"+$(this).val()+"").remove();
+
+                $("."+$(this).val()+"").remove();
                 var index = ck_string.indexOf($(this).val());
                 if( index > -1 )
                 {
@@ -285,7 +292,7 @@ else {
               });
 
             $.each($("input[name='Vendor_type[]']:checked"), function(){
-              debugger;
+
               if(ck_string.indexOf($(this).val()) > -1 )
               {
 
@@ -293,11 +300,11 @@ else {
               else {
                 ck_string.push($(this).val());
                 $.ajax({ url: "../Vendor/get_service_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
-                  debugger;
+
                   $("#panel-body-vendor-service").append(result);
                 }});
                 $.ajax({ url: "../Vendor/get_faq_by_vendor_type", data:"vendor_type_id="+$(this).val(), success: function(result){
-                  debugger;
+
                   $("#panel-body-service").append(result);
                 }});
               }
@@ -316,8 +323,8 @@ else {
 
 
     $('.next-2').click(function(){
-        debugger;
-        debugger;
+
+
       	$('#vendor_add').bootstrapValidator({
           trigger: 'blur',
           fields: {
@@ -409,7 +416,7 @@ else {
           }
       	});
 
-      	if($('#vendor_add').bootstrapValidator('validate').has('.has-error').length > 0 && $("input[name='Vendor_type[]']:checked").length >0){
+      	if($('#vendor_add').bootstrapValidator('validate').has('.has-error').length > 0 && $("input[name='Vendor_type[]']:checked").length < 1){
       		return false;
       	}
       else {
@@ -418,11 +425,11 @@ else {
             var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
             var file_data=$("#Vendor_picture").prop("files")[0];
             var form = $('#vendor_add').serialize();
-            var form_data= new FormData($('form')[0]);
+            var form_data= new FormData($('#vendor_add')[0]);
             form_data.append("file",file_data);
         $.ajax({type: "POST", url: "../Vendor/save", data:form_data, cache : false,contentType: false,
     processData: false,success: function(result){
-	    debugger;
+
     			window.location.href = 'http://localhost:8080/Wedishedi/Welcome/dashboard';
     	  },
           error:function()
@@ -439,7 +446,7 @@ else {
     });
 
     $('.next-3').click(function(){
-      debugger;
+
       $('.input_validator').bootstrapValidator({
         trigger: 'blur',
         required:true,
@@ -533,6 +540,9 @@ $(document).scroll(function() {
     }
     }
 
+    if(document.querySelector( '.btn-7i' ))
+    {
     document.querySelector( '.btn-7i' ).addEventListener( 'click', function() {
         classie.add( document.querySelector( '#trash-effect' ), 'trash-effect-active' );
     }, false );
+  }

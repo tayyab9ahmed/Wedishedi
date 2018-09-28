@@ -41,10 +41,12 @@
               </div>--->
             </div>
             <section>
-            <div class="container" style="margin-top: 50px;margin-bottom: 30px;">
-              <div class="row">
+            <div class="container" style="margin-top: 50px;margin-bottom: 30px;background-image: url('../../images/vendortesting/<?php echo $get_vendor_by_id['Vendor_picture_path']; ?>');height: 250px !important;background-repeat: round;background-size: cover;background-attachment: fixed;">
+                <h2 style="/* padding-left:15px; */font-size: 45px;font-weight: bold;text-align: center;color: white;padding-top: 100px;padding-bottom: 65px;background-color: rgba(0,0,0,0.3);"><?php echo $get_vendor_by_id['Vendor_name']; ?></h2>
+
+              <!--<div class="row">
                 <div class="col-md-6">
-                  <span class="vendor_name container" style="padding-left:15px;">Hi, <?php echo $get_vendor_by_id['Vendor_name']; ?>.<span>
+
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-warning" data-toggle="modal" data-target="#Quote">Request Quote</button>
@@ -52,7 +54,7 @@
                 <div class="col-md-3">
                   <button class="btn btn-success" data-toggle="modal" data-target="#ContactInfo"><i class="glyphicon glyphicon-earphone" style="font-size: 20px;margin-right: 10px;"></i>View Contact Info</button>
                 </div>
-              </div>
+              </div>-->
               <div>
             </section>
             <div class="modal fade" id="Quote" role="dialog">
@@ -217,13 +219,7 @@
                   <!--<img style="width:100%;" src="../../images/vendortesting/<?php echo $get_vendor_by_id['Vendor_picture_path']; ?>" class="img-responsive" alt=""> -->
                 <!--</div> -->
                 <div class="col-md-4" >
-                  <div style="background: #f7f7f7;">
-                    <div class="row">
-                      <div class="col-lg-1 col-centered">
-                        <img id="blah" class="img-responsive " style="margin-left:100px;max-height: 150px !important; max-width: 150px !important;" src="../../images/vendortesting/<?php echo $get_vendor_by_id['Vendor_picture_path']; ?>" alt="your image" />
-                      </div>
-                    </div>
-                    <hr></hr>
+                  <div style="">
                     <i class="glyphicon glyphicon-map-marker" style="font-size:20px;"></i>
                       <span style="font-size:20px; padding-left:15px; color:#aa6708;"><b><?php echo $get_vendor_by_id['Vendor_address']; ?>.</b></span>
                     <hr></hr>
@@ -236,7 +232,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="col-md-12" style="background: #f7f7f7;">
+                    <div class="col-md-12" style="">
                       <h1 style="margin-top: 30px;"><span>Services Included</span></h1>
                       <div class="tab-content" style="margin-top:20px;">
                         <div id="Overview12" class="tab-pane fade in active">
@@ -258,7 +254,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12" style="background: #f7f7f7;">
+                    <div class="col-md-12" style="">
                       <!--<ul class="nav nav-pills nav-justified">
                         <li class="active"><a data-toggle="tab" href="#Overview">Frequently Asked Questions</a></li>
                         <li><a data-toggle="tab" href="#Avalaiblity">Avalaiblity</a></li>
@@ -304,7 +300,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 col-md-offset-1" style="background: #f7f7f7;">
+                <div class="col-md-6 col-md-offset-1" style="">
                   <span class="vendor_name container" style="padding-left:15px;">Vendor Packages<span>
                   <hr></hr>
                   <div class="content">
@@ -315,8 +311,8 @@
                     {
                       ?>
 
-
-                      <div class="col-md-12 package-box" style="background: white;">
+                      <a href="<?php echo base_url()?>Vendor/packagedetail/?id=<?php echo $package['Package_id']; ?>">
+                      <div class="col-md-12 package-box" style="background: #f7f7f7;">
                         <div class="row">
                         <div class="col-md-4">
                         <img class="img-responsive" src="<?php echo base_url() ; ?>images/packagetesting/<?php echo $package['package_picture_path']; ?>" class="img-responsive" alt="">
@@ -339,6 +335,7 @@
                     </div>
 
                       </div>
+                    </a>
                       <?
                     }
                   }

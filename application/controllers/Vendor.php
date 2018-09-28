@@ -179,7 +179,7 @@ class Vendor extends CI_Controller {
 	public function save()
 		{
 			$Vendor_name = $this->input->post('Vendor_name');
-			if(isset($Vendor_name) && count($Vendor_name)>0 )
+			if(isset($Vendor_name) && count($Vendor_name) > 0 )
 			{
 
 				$data['Vendor_name'] = $Vendor_name;
@@ -450,6 +450,15 @@ class Vendor extends CI_Controller {
 						 }
 					}
 				}
+			}
+
+			public function packagedetail()
+			{
+				$package_id = $this->input->get('id');
+				$data['get_package_by_id'] = $this->vendor_model->get_package_by_id($package_id);
+				$data['get_package_images'] = $this->vendor_model->get_package_images($package_id);
+				$data['get_vendor_by_id'] = $this->vendor_model->get_vendor_by_id($data['get_package_by_id']['Vendor_id']);
+				$this->load->view('vendor/pdetail.php',$data);
 			}
 
 			public function get_all_vendor_type()
